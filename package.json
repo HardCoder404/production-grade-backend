@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "echo \"No tests configured\""
   },
   "keywords": [],
   "author": "",
