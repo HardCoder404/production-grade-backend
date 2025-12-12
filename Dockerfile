@@ -1,22 +1,21 @@
-FROM node:lts-alpine
+# Base image
+FROM node:22-alpine
 
 # Set working directory
-WORKDIR /src
+WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install --force
-
-COPY . .
+# Set environment to production
+ENV NODE_ENV=production
 
 # Install dependencies
+COPY package*.json ./
 RUN npm install
 
-# Build the project ( TypeScript build)
-RUN npm run build
+# Copy app files
+COPY . .
 
-# Expose port your app listens on
-EXPOSE 8080
+# Expose the app port
+EXPOSE 3000
 
-# Run the production script
-CMD ["npm", "start"]
+# Command to run the app
+CMD ["node", "src/server.js"]
