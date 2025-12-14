@@ -7,7 +7,7 @@ import userRoutes from './user';
 
 router.get('/', (req, res) => {
   res.status(200).json({ 
-    message: 'API is live', 
+    message: 'API is live for testing', 
     version: '1.0.0',
     status: 'OK',
     timestamp: new Date().toISOString()
