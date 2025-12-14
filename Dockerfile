@@ -1,21 +1,41 @@
-# Base image
-FROM node:22-alpine
+# --------------------
+# Build stage
+# --------------------
+FROM node:22-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Set environment to production
-ENV NODE_ENV=production
-
-# Install dependencies
+# Copy dependency files
 COPY package*.json ./
+
+# Install all deps (including dev for tsc)
 RUN npm install
 
-# Copy app files
+# Copy source code
 COPY . .
 
-# Expose the app port
+# Build TypeScript -> dist/
+RUN npm run build
+
+
+# --------------------
+# Production stage
+# --------------------
+FROM node:22-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Copy only package files
+COPY package*.json ./
+
+# Install ONLY production deps
+RUN npm install --omit=dev
+
+# Copy compiled JS from builder
+COPY --from=builder /app/dist ./dist
+
 EXPOSE 3000
 
-# Command to run the app
-CMD ["node", "src/server.js"]
+CMD ["node", "dist/server.js"]
