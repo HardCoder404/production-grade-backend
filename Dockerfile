@@ -36,6 +36,6 @@ RUN npm install --omit=dev
 # Copy compiled JS from builder
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["node", "dist/server.js"]
